@@ -50,4 +50,22 @@ public class MonedaXmlService
             serializer.Serialize(stream, coleccion);
         }
     }
+
+    internal string? SerializarMonedas(List<Moneda> monedas)
+    {
+        var coleccion = new ColeccionMonedas { Moneda = monedas };
+        var serializer = new XmlSerializer(typeof(ColeccionMonedas));
+        using var stringWriter = new StringWriter();
+        serializer.Serialize(stringWriter, coleccion);
+        return stringWriter.ToString();
+    }
+
+    public List<Moneda> DeserializarMonedas(string xml)
+    {
+        var serializer = new XmlSerializer(typeof(ColeccionMonedas));
+        using var reader = new StringReader(xml);
+        var coleccion = (ColeccionMonedas)serializer.Deserialize(reader);
+        return coleccion?.Moneda ?? new List<Moneda>();
+    }
+
 }
