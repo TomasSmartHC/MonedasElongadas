@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="MonedasElongadas.NuevaMonedaPage"
+             Title="Nueva moneda">
+    <VerticalStackLayout Padding="16" Spacing="12">
+        <Entry x:Name="TituloEntry" Placeholder="Título" />
+        <Entry x:Name="DescripcionEntry" Placeholder="Descripción" />
+        <Entry x:Name="LugarEntry" Placeholder="Lugar de obtención" />
+        <DatePicker x:Name="FechaObtencionPicker" />
+        <Button Text="Añadir moneda"
+                Clicked="AnadirMoneda_Clicked"
+                BackgroundColor="#2d415a"
+                TextColor="White"/>
+    </VerticalStackLayout>
+</ContentPage>

@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ColeccionMonedas>
+  <Moneda>
+    <Titulo>Moneda del Museo del Prado</Titulo>
+    <Descripcion>Moneda elongada con la imagen del museo</Descripcion>
+    <LugarObtencion>Museo del Prado, Madrid</LugarObtencion>
+    <FechaObtencion>2024-05-10</FechaObtencion>
+    <FechaAlta>2024-05-12T14:30:00</FechaAlta>
+    <FechaModificacion>2024-06-01T09:15:00</FechaModificacion>
+  </Moneda>
+  <Moneda>
+    <Titulo>Moneda de la Sagrada Familia</Titulo>
+    <Descripcion>Moneda elongada con la fachada de la Sagrada Familia</Descripcion>
+    <LugarObtencion>Sagrada Familia, Barcelona</LugarObtencion>
+    <FechaObtencion>2023-08-22</FechaObtencion>
+    <FechaAlta>2023-08-23T11:00:00</FechaAlta>
+    <FechaModificacion>2024-05-30T16:45:00</FechaModificacion>
+  </Moneda>
+</ColeccionMonedas>
