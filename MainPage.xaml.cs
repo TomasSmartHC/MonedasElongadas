@@ -29,7 +29,7 @@ namespace MonedasElongadas
 
         private async void BorrarMoneda_Clicked(object sender, EventArgs e)
         {
-            if (sender is Button btn && btn.BindingContext is Moneda moneda)
+            if (sender is ImageButton btn && btn.BindingContext is Moneda moneda)
             {
                 bool confirm = await DisplayAlert("Confirmar", $"¿Borrar la moneda \"{moneda.Titulo}\"?", "Sí", "No");
                 if (!confirm) return;
@@ -57,6 +57,24 @@ namespace MonedasElongadas
                     monedasObservable.Add(m);
             }
             MonedasCollectionView.ItemsSource = monedasObservable;
+        }
+
+        private async void OnMonedaTapped(object sender, EventArgs e)
+        {
+            if (sender is Border border && border.BindingContext is Moneda monedaSeleccionada)
+            {
+                // Usa la colección enlazada al CollectionView para obtener el índice
+                var collection = MonedasCollectionView.ItemsSource as IList<Moneda>;
+                int indice = collection?.IndexOf(monedaSeleccionada) ?? -1;
+
+                if (indice >= 0)
+                {
+                    await Shell.Current.GoToAsync(nameof(NuevaMonedaPage), true, new Dictionary<string, object>
+            {
+                { "IndiceMoneda", indice }
+            });
+                }
+            }
         }
     }
 }

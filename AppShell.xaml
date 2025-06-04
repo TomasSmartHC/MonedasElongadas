@@ -5,7 +5,7 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
     xmlns:local="clr-namespace:MonedasElongadas"
     Shell.FlyoutBehavior="Flyout"
-    Title="MonedasElongadas">
+    Title="Monedas Elongadas">
 
     <FlyoutItem Title="Listado" Icon="list.png">
         <ShellContent Route="MainPage" ContentTemplate="{DataTemplate local:MainPage}" />
@@ -13,10 +13,10 @@
     <FlyoutItem Title="Nueva moneda" Icon="add.png">
         <ShellContent ContentTemplate="{DataTemplate local:NuevaMonedaPage}" />
     </FlyoutItem>
-    <FlyoutItem Title="Exportar" Icon="download.png">
+    <FlyoutItem Title="Exportar" Icon="export.png">
         <ShellContent Route="DescargarXmlPage" ContentTemplate="{DataTemplate local:DescargarXmlPage}" />
     </FlyoutItem>
-    <FlyoutItem Title="Importar" Icon="upload.png">
+    <FlyoutItem Title="Importar" Icon="import.png">
         <ShellContent Route="ImportarXmlPage" ContentTemplate="{DataTemplate local:ImportarXmlPage}" />
     </FlyoutItem>
 </Shell>

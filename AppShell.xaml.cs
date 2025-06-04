@@ -4,6 +4,7 @@
     {
         public AppShell()
         {
+            Routing.RegisterRoute(nameof(NuevaMonedaPage), typeof(NuevaMonedaPage));
             InitializeComponent();
         }
     }

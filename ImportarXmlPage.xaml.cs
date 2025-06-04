@@ -10,6 +10,13 @@ namespace MonedasElongadas
     {
         private MonedaXmlService servicio = new MonedaXmlService();
 
+        protected override void OnAppearing()
+        {
+            base.OnAppearing();
+            ResultadoLabel.Text = "";
+            ResultadoLabel.TextColor = Colors.Green; // Opcional: restablece el color
+        }
+
         // Define static readonly field for XML file types to address CA1861  
         private static readonly FilePickerFileType XmlFileType = new FilePickerFileType(new Dictionary<DevicePlatform, IEnumerable<string>>
            {
