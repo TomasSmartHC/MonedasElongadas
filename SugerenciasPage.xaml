@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="MonedasElongadas.SugerenciasPage"
+             Title="Enviar sugerencia">
+    <ScrollView>
+        <VerticalStackLayout Padding="16" Spacing="12">
+            <Label Text="¿Tienes alguna sugerencia? Escríbela aquí:" FontAttributes="Bold"/>
+            <Editor x:Name="SugerenciaEditor" HeightRequest="120" Placeholder="Escribe tu sugerencia aquí..." />
+            <Button Text="Enviar sugerencia"
+                    Clicked="EnviarSugerencia_Clicked"
+                    BackgroundColor="#2d415a"
+                    TextColor="White"/>
+        </VerticalStackLayout>
+    </ScrollView>
+</ContentPage>

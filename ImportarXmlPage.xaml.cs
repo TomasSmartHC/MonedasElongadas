@@ -51,7 +51,7 @@ namespace MonedasElongadas
                     var monedas = servicio.DeserializarMonedas(xmlContent); // Debes tener este método  
 
                     // Guarda las monedas importadas  
-                    await servicio.GuardarMonedasAsync(monedas);
+                    MonedaXmlService.Guardar(monedas);
 
                     ResultadoLabel.Text = "Importación completada correctamente.";
                     ResultadoLabel.TextColor = Colors.Green;

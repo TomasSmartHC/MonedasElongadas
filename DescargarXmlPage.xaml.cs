@@ -13,13 +13,11 @@ namespace MonedasElongadas
             InitializeComponent();
         }
 
-        private async void OnDescargarXmlClicked(object sender, EventArgs e)
+        private void OnDescargarXmlClicked(object sender, EventArgs e)
         {
             try
             {
-                // Obtén el XML como string (ajusta según tu implementación)
-                var monedas = await servicio.LeerMonedasAsync();
-                var xml = servicio.SerializarMonedas(monedas); // Debes tener este método
+                var xml = MonedaXmlService.SerializarMonedas(MonedaXmlService.LeerMonedasAsync());
 
                 // Define la ruta de guardado
                 var fileName = $"monedas_{DateTime.Now:yyyyMMdd_HHmmss}.xml";

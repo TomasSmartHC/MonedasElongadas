@@ -11,19 +11,20 @@ namespace MonedasElongadas
         public MainPage()
         {
             InitializeComponent();
+            monedasObservable = [];
             CargarMonedas();
         }
 
-        private async void MonedasCollectionView_ReorderCompleted(object sender, EventArgs e)
+        private void MonedasCollectionView_ReorderCompleted(object sender, EventArgs e)
         {
             // Guarda el nuevo orden si lo necesitas
-            await servicio.GuardarMonedasAsync(monedasObservable.ToList());
+            MonedaXmlService.Guardar(monedasObservable.ToList());
         }
 
-        private async void CargarMonedas()
+        private void CargarMonedas()
         {
-            var monedas = await servicio.LeerMonedasAsync();
-            monedasObservable = new ObservableCollection<Moneda>(monedas);
+            var monedas = MonedaXmlService.LeerMonedasAsync();
+            monedasObservable = [.. monedas];
             MonedasCollectionView.ItemsSource = monedasObservable;
         }
 
@@ -35,21 +36,21 @@ namespace MonedasElongadas
                 if (!confirm) return;
 
                 monedasObservable.Remove(moneda);
-                await servicio.GuardarMonedasAsync(monedasObservable.ToList());
+                MonedaXmlService.Guardar(monedasObservable.ToList());
             }
         }
 
-        protected override async void OnAppearing()
+        protected override void OnAppearing()
         {
             base.OnAppearing();
-            await RecargarMonedas();
+            RecargarMonedas();
         }
 
-        private async Task RecargarMonedas()
+        private void RecargarMonedas()
         {
-            var monedas = await servicio.LeerMonedasAsync();
+            var monedas = MonedaXmlService.LeerMonedasAsync();
             if (monedasObservable == null)
-                monedasObservable = new ObservableCollection<Moneda>(monedas);
+                monedasObservable = [.. monedas];
             else
             {
                 monedasObservable.Clear();
@@ -70,9 +71,9 @@ namespace MonedasElongadas
                 if (indice >= 0)
                 {
                     await Shell.Current.GoToAsync(nameof(NuevaMonedaPage), true, new Dictionary<string, object>
-            {
-                { "IndiceMoneda", indice }
-            });
+                    {
+                        { "IndiceMoneda", indice }
+                    });
                 }
             }
         }

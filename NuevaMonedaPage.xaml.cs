@@ -1,17 +1,35 @@
-using Microsoft.Maui.Controls;
-using System.Collections.Generic;
-using System.Globalization;
-
 namespace MonedasElongadas
 {
     public partial class NuevaMonedaPage : ContentPage, IQueryAttributable
     {
-        private MonedaXmlService servicio = new MonedaXmlService();
         private int? indiceMonedaEditando = null;
+        private string? imagenBase64Temp = null;
 
         public NuevaMonedaPage()
         {
             InitializeComponent();
+            ImagenMoneda.Source = null;
+            BorrarImagenButton.IsVisible = false;
+        }
+        protected override void OnAppearing()
+        {
+            base.OnAppearing();
+
+            // Si NO estás editando una moneda, limpia los campos
+            if (!indiceMonedaEditando.HasValue)
+                InicializarElementos();
+        }
+
+        private void InicializarElementos()
+        {
+            TituloEntry.Text = string.Empty;
+            DescripcionEntry.Text = string.Empty;
+            LugarEntry.Text = string.Empty;
+            FechaObtencionPicker.Date = DateTime.Today;
+            ImagenMoneda.Source = null;
+            BorrarImagenButton.IsVisible = false;
+            CargarImagenButton.IsVisible = true;
+            imagenBase64Temp = null;
         }
 
         private async void CargarImagen_Clicked(object sender, EventArgs e)
@@ -30,8 +48,8 @@ namespace MonedasElongadas
                 var bytes = ms.ToArray();
                 var base64 = Convert.ToBase64String(bytes);
 
-                // Asigna la imagen a la moneda en edición
-                var monedas = await servicio.LeerMonedasAsync();
+                // Si estamos editando, guarda en la moneda existente
+                var monedas = MonedaXmlService.LeerMonedasAsync();
                 if (indiceMonedaEditando.HasValue && indiceMonedaEditando.Value >= 0 && indiceMonedaEditando.Value < monedas.Count)
                 {
                     var moneda = monedas[indiceMonedaEditando.Value];
@@ -39,33 +57,41 @@ namespace MonedasElongadas
                     ImagenMoneda.Source = moneda.ImagenSource;
                     BorrarImagenButton.IsVisible = true;
                     CargarImagenButton.IsVisible = false;
-                    await servicio.GuardarMonedasAsync(monedas);
+                    MonedaXmlService.Guardar(monedas);
+                }
+                else
+                {
+                    // Si es nueva moneda, guarda la imagen temporalmente y muéstrala
+                    imagenBase64Temp = base64;
+                    ImagenMoneda.Source = ImageSource.FromStream(() => new MemoryStream(bytes));
+                    BorrarImagenButton.IsVisible = true;
+                    CargarImagenButton.IsVisible = false;
                 }
             }
         }
 
-        private async void BorrarImagen_Clicked(object sender, EventArgs e)
+        private void BorrarImagen_Clicked(object sender, EventArgs e)
         {
             if (indiceMonedaEditando.HasValue)
             {
-                var monedas = await servicio.LeerMonedasAsync();
+                var monedas = MonedaXmlService.LeerMonedasAsync();
                 if (indiceMonedaEditando.Value >= 0 && indiceMonedaEditando.Value < monedas.Count)
                 {
                     var moneda = monedas[indiceMonedaEditando.Value];
                     moneda.Imagen = null;
-                    await servicio.GuardarMonedasAsync(monedas);
+                    MonedaXmlService.Guardar(monedas);
                     ImagenMoneda.Source = null;
                     BorrarImagenButton.IsVisible = false;
                 }
             }
         }
 
-        public async void ApplyQueryAttributes(IDictionary<string, object> query)
+        public void ApplyQueryAttributes(IDictionary<string, object> query)
         {
             if (query.TryGetValue("IndiceMoneda", out var indiceObj) && indiceObj is int indice && indice >= 0)
             {
                 indiceMonedaEditando = indice;
-                var monedas = await servicio.LeerMonedasAsync();
+                var monedas = MonedaXmlService.LeerMonedasAsync();
                 if (indice < monedas.Count)
                 {
                     var moneda = monedas[indice];
@@ -98,7 +124,7 @@ namespace MonedasElongadas
                 return;
             }
 
-            var monedas = await servicio.LeerMonedasAsync();
+            var monedas = MonedaXmlService.LeerMonedasAsync();
 
             if (indiceMonedaEditando.HasValue && indiceMonedaEditando.Value >= 0 && indiceMonedaEditando.Value < monedas.Count)
             {
@@ -120,12 +146,14 @@ namespace MonedasElongadas
                     LugarObtencion = LugarEntry.Text,
                     FechaObtencion = FechaObtencionPicker.Date,
                     FechaAlta = DateTime.Now,
-                    FechaModificacion = DateTime.Now
+                    FechaModificacion = DateTime.Now,
+                    Imagen = imagenBase64Temp // Asigna la imagen temporal
                 };
                 monedas.Insert(0, nuevaMoneda);
+                imagenBase64Temp = null; // Limpia la imagen temporal tras guardar
             }
 
-            await servicio.GuardarMonedasAsync(monedas);
+            MonedaXmlService.Guardar(monedas);
 
             await DisplayAlert("Éxito", indiceMonedaEditando.HasValue ? "Moneda modificada correctamente." : "Moneda añadida correctamente.", "OK");
             await Shell.Current.GoToAsync("//MainPage");
