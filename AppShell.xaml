@@ -19,7 +19,4 @@
     <FlyoutItem Title="Importar" Icon="import.png">
         <ShellContent Route="ImportarXmlPage" ContentTemplate="{DataTemplate local:ImportarXmlPage}" />
     </FlyoutItem>
-    <MenuItem Text="Sugerencias"
-          IconImageSource="suggestion.png"
-          Clicked="OnSugerenciasMenuClicked"/>
 </Shell>

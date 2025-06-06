@@ -80,10 +80,11 @@ namespace MonedasElongadas
                     var moneda = monedas[indiceMonedaEditando.Value];
                     moneda.Imagen = null;
                     MonedaXmlService.Guardar(monedas);
-                    ImagenMoneda.Source = null;
-                    BorrarImagenButton.IsVisible = false;
                 }
             }
+            ImagenMoneda.Source = null;
+            BorrarImagenButton.IsVisible = false;
+            CargarImagenButton.IsVisible = true;
         }
 
         public void ApplyQueryAttributes(IDictionary<string, object> query)
